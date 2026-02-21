@@ -56,17 +56,17 @@ const PG_TO_TS: Record<string, string> = {
   int: 'number',
   int2: 'number',
   int4: 'number',
-  int8: 'string', // bigint as string to avoid precision loss
-  bigint: 'string',
+  int8: '`${number}`', // bigint as string to avoid precision loss
+  bigint: '`${number}`',
   serial: 'number',
-  bigserial: 'string',
+  bigserial: '`${number}`',
   real: 'number',
   float4: 'number',
   float8: 'number',
   'double precision': 'number',
-  numeric: 'string', // avoid floating-point precision loss
-  decimal: 'string',
-  money: 'string',
+  numeric: '`${number}`', // avoid floating-point precision loss
+  decimal: '`${number}`',
+  money: '`${number}`',
 
   // Boolean
   boolean: 'boolean',
