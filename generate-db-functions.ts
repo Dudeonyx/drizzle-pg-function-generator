@@ -7,9 +7,7 @@
  * functions via Drizzle's `sql` template tag.
  *
  * Usage:
- *   bun generate-db-functions.ts [options]
- *   // OR
- *   node generate-db-functions.ts [options]
+ *   bun scripts/generate-db-functions.ts [options]
  *
  * Options:
  *   --schema <name>    Schema to introspect (default: "public")
@@ -429,7 +427,7 @@ function generateTypeScript(functions: PgFunctionInfo[]): string {
   const lines: string[] = [];
 
   lines.push(`// AUTO-GENERATED FILE — do not edit manually.`);
-  lines.push(`// Regenerate with: bun generate-db-functions.ts`);
+  lines.push(`// Regenerate with: bun scripts/generate-db-functions.ts`);
   lines.push(`// Generated at: ${new Date().toISOString()}`);
   lines.push(``);
   lines.push(`import { sql } from 'drizzle-orm';`);
@@ -563,10 +561,17 @@ function generateFunctionBlock(fn: PgFunctionInfo, nameSuffix = ''): string[] {
   // Construct the sql call
   const sqlArgs = inParams
     .map((p) => {
-      if (p.hasDefault) {
-        return `\${args.${p.name} ?? null}`;
+      const accessor = `args.${p.name}`;
+      const isJson = p.type === 'json' || p.type === 'jsonb';
+
+      if (isJson) {
+        return `\${${accessor} == undefined ? null : JSON.stringify(${accessor})}::${p.type}`;
       }
-      return `\${args.${p.name}}`;
+
+      if (p.hasDefault) {
+        return `\${${accessor} ?? null}`;
+      }
+      return `\${${accessor}}`;
     })
     .join(', ');
 
