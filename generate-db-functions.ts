@@ -7,7 +7,7 @@
  * functions via Drizzle's `sql` template tag.
  *
  * Usage:
- *   bun scripts/generate-db-functions.ts [options]
+ *   bun generate-db-functions.ts [options]
  *
  * Options:
  *   --schema <name>    Schema to introspect (default: "public")
@@ -427,7 +427,7 @@ function generateTypeScript(functions: PgFunctionInfo[]): string {
   const lines: string[] = [];
 
   lines.push(`// AUTO-GENERATED FILE — do not edit manually.`);
-  lines.push(`// Regenerate with: bun scripts/generate-db-functions.ts`);
+  lines.push(`// Regenerate with: bun generate-db-functions.ts`);
   lines.push(`// Generated at: ${new Date().toISOString()}`);
   lines.push(``);
   lines.push(`import { sql } from 'drizzle-orm';`);
